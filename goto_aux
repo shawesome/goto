@@ -1,0 +1,107 @@
+#!/usr/bin/python
+
+import os
+import sys
+from Tkinter import Tk
+
+
+def getArg(n):
+    try:
+        return sys.argv[n]
+    except:
+        return False
+        
+
+def error(msg):
+    sys.stderr.write(msg + '\n')
+    sys.stderr.flush()
+   
+def isRootPath(path):
+    contents = os.listdir(path)
+    results = map(lambda x: x in contents, ['app', 'skin'])
+    return all(results);
+
+def getRootPath():
+    while True:
+        cwd = os.getcwd()
+        if cwd == '/':
+            error('Magento root not found.')
+            return invocationPath
+
+        if isRootPath(cwd):
+            return cwd
+        else:
+            os.chdir('../');
+
+def getFilePath(loc):
+    if loc == 'root':
+        print 'cd ' + rootPath
+    elif loc == 'app':
+        print 'cd ' + rootPath + '/app/'
+    elif loc == 'skin':
+        theme = getArg(2)
+        if theme == False:
+            print 'cd ' + rootPath + '/skin/'
+        else:
+            print 'cd ' + rootPath + '/skin/frontend/' + theme + '/default'
+    elif loc == 'design':
+        theme = getArg(2)
+        if theme == False:
+            print 'cd ' + rootPath + '/app/design/'
+        else:
+            print 'cd ' + rootPath + '/app/design/frontend/' + theme
+    elif loc == 'frontend':
+        theme = getArg(2)
+        if theme == False:
+            print 'cd ' + rootPath + '/app/design/frontend/'
+        else:
+            print 'cd ' + rootPath + '/app/design/frontend/' + theme
+    elif loc == 'template':
+        theme = getArg(2)
+        if theme == False:
+            error('No theme provided')
+            print 'cd ' + rootPath;
+        else:
+            print 'cd ' + rootPath + '/app/design/frontend/' + theme + '/default/template/'
+    elif loc == 'layout':
+        theme = getArg(2)
+        if theme == False:
+            error('No theme provided')
+            print 'cd ' + rootPath;
+        else:
+            print 'cd ' + rootPath + '/app/design/frontend/' + theme + '/default/layout/'
+    elif loc == 'code':
+        codebase = getArg(2)
+        if codebase == False:
+            print 'cd ' + rootPath + '/app/code/'
+        else:
+            print 'cd ' + rootPath + '/app/code/' + codebase
+    elif loc == 'modman':
+        module = getArg(2)
+        if module == False:
+            print 'cd ' + rootPath + '/.modman/'
+        else:
+            print 'cd ' + rootPath + '/.modman/' + module
+    elif loc == 'class':
+        className = getArg(2)
+        filePath = rootPath + '/app/code/core/' + className.replace('_', '/') + '.php'
+        #filePath, ignore, fileName = filePath.rpartition('/')
+        print editor + ' ' + filePath
+
+    elif loc == 'log':
+        filePath = rootPath + '/var/log/'
+        print 'cd ' + filePath
+    else:
+        error('Invalid option passed.')
+        print 'cd ' + invocationPath
+
+# BEGIN SCRIPT
+loc = getArg(1);
+invocationPath = os.getcwd()
+rootPath = getRootPath()
+editor = 'vim'
+
+getFilePath(loc)
+
+
+
