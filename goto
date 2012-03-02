@@ -1,3 +1,3 @@
 #!/bin/bash
 
-eval $(python /Users/mshaw1989/Sites/meanbee/friday/goto/goto_aux $*)
+eval $(python /usr/local/Kitchen/goto/goto_aux $*)
