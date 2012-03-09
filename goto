@@ -1,3 +1,9 @@
 #!/bin/bash
 
-eval $(python /usr/local/Kitchen/goto/goto_aux $*)
+echo "It seems goto has not been set up correctly yet."
+echo "You need to append the following function to your .bashrc or equivilent."
+echo
+echo ""
+echo "function goto {"
+echo "    eval \$(python /usr/local/Kitchen/goto/goto_aux \$*)"
+echo "}"
