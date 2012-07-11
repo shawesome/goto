@@ -87,10 +87,20 @@ def getFilePath(loc):
         filePath = rootPath + '/app/code/core/' + className.replace('_', '/') + '.php'
         #filePath, ignore, fileName = filePath.rpartition('/')
         print editor + ' ' + filePath
-
     elif loc == 'log':
         filePath = rootPath + '/var/log/'
         print 'cd ' + filePath
+    elif loc == 'base':
+        #print invocationPath
+        filepath = invocationPath.split('/')
+
+        for i in [i for i,x in enumerate(filepath) if x == 'frontend']:
+            filepath[i+1] = 'base';
+            filepath = '/'.join(filepath);
+            break;
+        
+        print 'cd ' + filepath;
+
     else:
         error('Invalid option passed.')
         print 'cd ' + invocationPath
