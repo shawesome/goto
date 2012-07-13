@@ -90,16 +90,25 @@ def getFilePath(loc):
     elif loc == 'log':
         filePath = rootPath + '/var/log/'
         print 'cd ' + filePath
-    elif loc == 'base':
+    elif loc == 'base' or loc == 'switch':
         #print invocationPath
         filepath = invocationPath.split('/')
+        package = getArg(2)
 
-        for i in [i for i,x in enumerate(filepath) if x == 'frontend']:
-            filepath[i+1] = 'base';
-            filepath = '/'.join(filepath);
-            break;
-        
-        print 'cd ' + filepath;
+        if 'frontend' in filepath:
+            for i in [i for i,x in enumerate(filepath) if x == 'frontend']:
+                if package:
+                    filepath[i+1] = package
+                else:
+                    filepath[i+1] = 'base'
+
+                filepath = '/'.join(filepath)
+                break;
+            
+            print 'cd ' + filepath;
+        else:
+            error('Not in a template directory.')
+            print 'cd ' + invocationPath
 
     else:
         error('Invalid option passed.')
