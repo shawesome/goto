@@ -47,7 +47,10 @@ def expandTheme(theme, directory):
         if len(res) == 1:
             # We've found a single theme which is a shortcut. E.g. goto template b == goto template base
             theme = res[0]
-        # If there are more than one, just return what they have input.
+        else:
+            # If there are more than one, let them know
+            error("Several packages match this shorthand: %s. Please be more specific." % (", ".join(res)));
+
 
     return theme
 
