@@ -56,18 +56,21 @@ def expandTheme(theme, directory):
         path += rootPath + '/app/design/frontend/'
 
     packages = os.listdir(path)
+    expandedTheme = False
 
     if theme not in packages:
         res = filter(lambda x:x.startswith(theme), packages)
         if len(res) == 1:
             # We've found a single theme which is a shortcut. E.g. goto template b == goto template base
-            theme = res[0]
+            expandedTheme = res[0]
+        elif len(res) == 0:
+            error("There were no themes which match %s" % theme)
         else:
             # If there are more than one, let them know
             error("Several packages match this shorthand: %s. Please be more specific." % (", ".join(res)));
 
 
-    return theme
+    return expandedTheme
 
 
 def getFilePath(loc):
@@ -80,33 +83,43 @@ def getFilePath(loc):
         if theme == False:
             print 'cd ' + rootPath + '/skin/'
         else:
-            print 'cd ' + rootPath + '/skin/frontend/' + expandTheme(theme, 'skin') + '/default'
+            expandedTheme = expandTheme(theme, 'skin')
+            if expandedTheme:
+                print 'cd ' + rootPath + '/skin/frontend/' + expandedTheme + '/default'
     elif loc == 'design':
         theme = getArg(2)
         if theme == False:
             print 'cd ' + rootPath + '/app/design/'
         else:
-            print 'cd ' + rootPath + '/app/design/frontend/' + expandTheme(theme, 'app')
+            expandedTheme = expandTheme(theme, 'app')
+            if expandedTheme:
+                print 'cd ' + rootPath + '/app/design/frontend/' + expandedTheme
     elif loc == 'frontend':
         theme = getArg(2)
         if theme == False:
             print 'cd ' + rootPath + '/app/design/frontend/'
         else:
-            print 'cd ' + rootPath + '/app/design/frontend/' + expandTheme(theme, 'app')
+            expandedTheme = expandTheme(theme, 'app')
+            if expandedTheme:
+                print 'cd ' + rootPath + '/app/design/frontend/' + expandedTheme
     elif loc == 'template':
         theme = getArg(2)
         if theme == False:
             error('No theme provided')
             print 'cd ' + rootPath;
         else:
-            print 'cd ' + rootPath + '/app/design/frontend/' + expandTheme(theme, 'app') + '/default/template/'
+            expandedTheme = expandTheme(theme, 'app')
+            if expandedTheme:
+                print 'cd ' + rootPath + '/app/design/frontend/' + expandedTheme + '/default/template/'
     elif loc == 'layout':
         theme = getArg(2)
         if theme == False:
             error('No theme provided')
             print 'cd ' + rootPath;
         else:
-            print 'cd ' + rootPath + '/app/design/frontend/' + expandTheme(theme, 'app') + '/default/layout/'
+            expandedTheme = expandTheme(theme, 'app')
+            if expandedTheme:
+                print 'cd ' + rootPath + '/app/design/frontend/' + expandedTheme + '/default/layout/'
     elif loc == 'code':
         codebase = getArg(2)
         if codebase == False:
@@ -137,12 +150,15 @@ def getFilePath(loc):
 
                     filepath[i+1] = theme 
                 else:
+                    theme = 'base'
                     filepath[i+1] = 'base'
 
-                filepath = '/'.join(filepath)
-                break;
+                if theme:
+                    filepath = '/'.join(filepath)
+                    break;
             
-            print 'cd ' + filepath;
+            if theme:
+                print 'cd ' + filepath;
         else:
             error('Not in a template directory.')
             print 'cd ' + invocationPath
