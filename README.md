@@ -9,7 +9,7 @@ A command line utility to aid speedy navigation around a Magento install.
     Usage: goto command [param]
 
 # Usage
-    Usage: goto command [param]
+    goto command [param]
 
 Commands can be one of the following:
 
