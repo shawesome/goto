@@ -119,11 +119,6 @@ def getFilePath(loc):
             print 'cd ' + rootPath + '/.modman/'
         else:
             print 'cd ' + rootPath + '/.modman/' + module
-    elif loc == 'class':
-        className = getArg(2)
-        filePath = rootPath + '/app/code/core/' + className.replace('_', '/') + '.php'
-        #filePath, ignore, fileName = filePath.rpartition('/')
-        print editor + ' ' + filePath
     elif loc == 'log':
         filePath = rootPath + '/var/log/'
         print 'cd ' + filePath
@@ -162,6 +157,5 @@ def getFilePath(loc):
 loc = getArg(1);
 invocationPath = os.getcwd()
 rootPath = getRootPath()
-editor = 'vim'
 
 getFilePath(loc)
